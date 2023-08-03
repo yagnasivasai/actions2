@@ -21,11 +21,11 @@ jobs:
             - With GitHub **Markdown** :sparkles:
             - Created by [create-or-update-comment][1]
           reactions: '+1'
-  comment-with-api:  ## Job name
+  comment-with-api-by-curl:  ## Job name
     runs-on: ubuntu-latest
     needs: comment-with-action ## so we basically disabling parallel execution with this which comes by default
     steps:
-      - name: comment with api
+      - name: comment with api by curl
         run: |
           curl --request POST \
           --url https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
@@ -41,15 +41,20 @@ jobs:
           ORGANIZATION: ${{ github.event.issue.user.login }}
           REPOSITORY: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-
-        #   gh api -X POST \
-        #       https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
-        #       -f body='
-        #       Comment but from the API call not action
-        #       '
-        # env: 
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #   ORGANIZATION: ${{ github.event.organization.login }}
-        #   REPOSITORY: ${{ github.event.repository.name }}
-        #   ISSUE_NUMBER: ${{ github.event.issue.number }}
+  comment-with-api-by-gh:
+    runs-on: ubuntu-latest
+    needs: comment-with-api-by-curl
+    steps:
+      - name: comment with api by gh
+        run: |
+          gh api -X POST \
+            https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+            -f body='
+            Comment but from the API call not action
+            '
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORGANIZATION: ${{ github.event.issue.user.login }}
+          REPOSITORY: ${{ github.event.repository.name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         
