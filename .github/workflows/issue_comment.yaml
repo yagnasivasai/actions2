@@ -26,8 +26,9 @@ jobs:
     steps:
       - name: comment with api
         run: |
-          gh api -X POST \
-          https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+          curl --request POST \
+          --url https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }} \
           -f body='
           Comment but from the API call not action
           '
@@ -36,7 +37,7 @@ jobs:
           ORGANIZATION: ${{ github.event.organization.login }}
           REPOSITORY: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-          
+
         #   gh api -X POST \
         #       https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
         #       -f body='
@@ -49,3 +50,4 @@ jobs:
         #   ISSUE_NUMBER: ${{ github.event.issue.number }}
           
       
+"https://api.github.com/repos/yagnasivasai/actions2/issues/8/comments"
