@@ -28,13 +28,16 @@ jobs:
         run: |
           curl --request POST \
           --url https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }} \
-          -f body='
-          Comment but from the API call not action
-          '
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'content-type: application/json' \
+          --data '{
+            "title": "Automated issue for commit: ${{ github.sha }}",
+            "body": "Comment but from the API call not action **${{ github.workflow }}**. \n\n The commit hash was: _${{ github.sha }}_."
+            }' \
+          --fail
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ORGANIZATION: ${{ github.event.organization.login }}
+          ORGANIZATION: ${{ github.event.user.login }}
           REPOSITORY: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
 
@@ -48,3 +51,4 @@ jobs:
         #   ORGANIZATION: ${{ github.event.organization.login }}
         #   REPOSITORY: ${{ github.event.repository.name }}
         #   ISSUE_NUMBER: ${{ github.event.issue.number }}
+        
