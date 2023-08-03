@@ -18,6 +18,7 @@ jobs:
               shell: bash
     goodbye:
         runs-on: ubuntu-22.04
+        needs: hello
         steps:
             - name: iamdead
               run: echo "goodbyeworld"
