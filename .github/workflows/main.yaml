@@ -1,26 +1,26 @@
 name: helloworld-workflow
 
 on:
-    push: 
-        branches: main
-    pull_request:
-        branches: main
-    workflow_dispatch:
+  push: 
+    branches: main
+  pull_request:
+    branches: main
+  workflow_dispatch:
 
 
 jobs:
-    hello:
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v2
-            - name: Helloworld
-              run: echo "helloworld && second run"
-              shell: bash
-    goodbye:
-        runs-on: ubuntu-22.04
-        needs: hello
-        steps:
-            - name: iamdead
-              run: echo "goodbyeworld"
-              shell: bash
+  hello:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Helloworld
+        run: echo "helloworld && second run"
+        shell: bash
+  goodbye:
+    runs-on: ubuntu-22.04
+    needs: hello
+    steps:
+      - name: iamdead
+        run: echo "goodbyeworld"
+        shell: bash
 
